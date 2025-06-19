@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  employee-attendance:
+    container_name: surekha-employee-attendance
+    build: ./Employee-Attendance
+    ports:
+      - "8021:80"
+    networks:
+      - surekha_net
+
+  hr-attendance:
+    container_name: surekha-hr-attendance
+    build: ./HR-Attendance
+    ports:
+      - "8022:80"
+    networks:
+      - surekha_net
+
+  backend:
+    container_name: surekha-attendance-backend
+    build: ./Backend
+    ports:
+      - "3011:3011"
+    depends_on:
+      - postgres
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: admin834
+      DB_NAME: attendance_db
+      DB_HOST: postgres
+      DB_PORT: 5432
+      PORT: 3011
+    networks:
+      - surekha_net
+
+  postgres:
+    container_name: surekha-attendance-postgres
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin834
+      POSTGRES_DB: attendance_db
+    ports:
+      - "5443:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - surekha_net
+
+volumes:
+  pgdata:
+
+networks:
+  surekha_net:
+

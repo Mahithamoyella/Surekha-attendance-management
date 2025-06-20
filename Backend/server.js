@@ -278,5 +278,5 @@ app.get('/api/export', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://3.86.140.254:${port}`);
+    console.log(`Server running at http://54.81.30.45:${port}`);
 });
